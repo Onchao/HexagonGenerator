@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/HexagonGenerator">
+        <file>graphics/desert.png</file>
+        <file>graphics/forest.png</file>
+        <file>graphics/label.png</file>
+        <file>graphics/plains.png</file>
+        <file>graphics/card.png</file>
+    </qresource>
+</RCC>
