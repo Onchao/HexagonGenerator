@@ -1,3 +1,5 @@
+# HexagonGenerator
+
 ## What Is HexagonGenerator?
 
 It is a tool for generating tileable multi-hexagonal tiles. 
