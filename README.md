@@ -17,21 +17,19 @@ The HexagonGenerator generates:
 ### Creating a Location: An Example
 
 ![View of the application](docs/hexagon_generator.png)
-<div style="text-align: center; margin-top: -16pt; margin-bottom: 16pt">
+<p align="center">
   <i>Screenshot of the HexagonGenerator interface.</i>
-</div>
-
+</p>
 
 ![Generated files](docs/hexoutput.png) 
-<div style="text-align: center; margin-top: -16pt; margin-bottom: 16pt">
+<p align="center">
   <i>Files produced by the HexagonGenerator.</i>
-</div>
+</p>
 
 ![Generated files](docs/result.jpg)
-<div style="text-align: center; margin-top: -16pt; margin-bottom: 16pt">
+<p align="center">
   <i>Locations assembled and fit together.</i>
-</div>
-
+</p>
 
 ## What's Interesting About This Project?
 
