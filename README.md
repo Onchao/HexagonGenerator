@@ -18,7 +18,7 @@ The HexagonGenerator generates:
 
 <p align="center">
     <img src="docs/hexagon_generator.png" alt>
-    <em>Screenshot of the HexagonGenerator interface.</em>
+    <em>Interface of the HexagonGenerator.</em>
 </p>
 
 <p align="center">
