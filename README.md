@@ -22,6 +22,9 @@ The HexagonGenerator generates:
 ![Generated files](docs/hexoutput.png)
 *Files produced by the HexagonGenerator.*
 
+![Generated files](docs/result.jpg)
+*Locations assembled and fit together.*
+
 ## What's Interesting About This Project?
 
 In most board games, custom-generated maps are rarely seen. 
