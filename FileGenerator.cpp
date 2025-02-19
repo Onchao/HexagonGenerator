@@ -87,7 +87,7 @@ void FileGenerator::generate2dPrintSimple(const QString& name, int hexHeightMm, 
 	const int targetPixmapSize = hexHeightPx * 10;
 	const float penWidth = hexHeightPx / 35.0f;
 	const float offset = penWidth / 2 - mmToPx(0.7 + 0.1 * hexHeightMm);
-	//const float additionalOffset = mmToPx(0.25 + 0.1 * hexHeightMm / std::sqrt(3)); // why doesnt it work?????
+	//const float additionalOffset = mmToPx(0.25 + 0.1 * hexHeightMm / std::sqrt(3)); // TODO: fix it when using correct offset algorithm
 
 	std::vector<QPointF> allVertices;
 	std::vector<QPointF> hexCenters;
@@ -102,7 +102,9 @@ void FileGenerator::generate2dPrintSimple(const QString& name, int hexHeightMm, 
 			hullCycleSimple.push_back(hullCycle[i]);
 		}
 	}
-	//std::vector<QPointF> hullCycleOffsetted = offsetVertices(hullCycleSimple, -penWidth / 2 - additionalOffset, hexHeightPx); // why doesnt it work?????
+	// TODO: fix it when using correct offset algorithm
+	// std::vector<QPointF> hullCycleOffsetted = offsetVertices(hullCycleSimple, -penWidth / 2 - additionalOffset, hexHeightPx); 
+	// TARGET OFFSET: -41.687
 	std::vector<QPointF> hullCycleOffsetted = offsetVertices(hullCycleSimple, offset, hexHeightPx);
 
 	std::vector<QPointF> smoothedCycle;
@@ -355,6 +357,7 @@ std::vector<QPointF> FileGenerator::offsetVertices(
 		float dist, 
 		float hexHeightPx)
 {
+	//dist=0;
 	std::vector<QPointF> hullCycleOffsetted;
 	hullCycleOffsetted.reserve(hullCycle.size());
 
@@ -377,7 +380,21 @@ std::vector<QPointF> FileGenerator::offsetVertices(
 		const QPointF uBC = unitVector(BC);
 
 		const QPointF BD = uBA + uBC; // both points E and F will be on this vector
+		const QPointF uBD = unitVector(BD);
+		
+		// we are shifting B vertex so the distance must be scaled based on angle
+		// shift = dist / sin(ABD)
+		// sin(ABD) = |BA x BD| / (|BA|*|BD|)
+		// shift = dist * |BA|*|BD| / |BA x BD|
+		// after substituting unit vector lengths: shift = dist / |uBA x uBD|
 
+		const float shift = dist / crossProduct(uBA, QPointF(0, 0), uBD);
+
+		const QPointF shiftVec = uBD * shift;
+		//const QPointF E = B + shiftVec;
+		//const QPointF F = B - shiftVec;
+		// BUG: TODO: correct E and F calculation is commented in 2 lines above. remember to fix offset distances in this file
+		// for now it is left out bugged because we have already made a few locations
 		const QPointF E = B + BD * dist;
 		const QPointF F = B - BD * dist;
 
@@ -397,18 +414,18 @@ std::vector<QPointF> FileGenerator::offsetVertices(
 	return hullCycleOffsetted;
 }
 
-QPointF FileGenerator::unitVector(const QPointF& point)
+QPointF FileGenerator::unitVector(const QPointF& point) const
 {
 	qreal length = qSqrt(point.x() * point.x() + point.y() * point.y());
 	return (length == 0) ? QPointF(0, 0) : QPointF(point.x() / length, point.y() / length);
 };
 
-float FileGenerator::crossProduct(QPointF A, QPointF B, QPointF C)
+float FileGenerator::crossProduct(const QPointF& A, const QPointF& B, const QPointF& C) const
 {
 	return (B.x() - A.x()) * (C.y() - A.y()) - (B.y() - A.y()) * (C.x() - A.x());
 }
 
-bool FileGenerator::sameSide(QPointF A, QPointF B, QPointF C, QPointF D)
+bool FileGenerator::sameSide(const QPointF& A, const QPointF& B, const QPointF& C, const QPointF& D) const
 {
 	double crossC = crossProduct(A, B, C);
 	double crossD = crossProduct(A, B, D);

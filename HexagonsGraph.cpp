@@ -78,7 +78,7 @@ std::set<Hexagon> HexagonsGraph::getFreeAdjacent()
 int Hexagon::addTeethToEdge(std::vector<QPointF>& toothVertices, QPointF u, QPointF v) const
 {
 	bool swapped = false;
-	// ensure that teeth are always selected in the same order
+	// ensures that teeth are always selected in the same order
 	// to avoid floating point rounding errors
 	if (u.y() > v.y()) {
 		std::swap(u, v);
@@ -141,32 +141,31 @@ int Hexagon::addTeethToEdgeSimple(std::vector<QPointF>& toothVertices, QPointF u
 	*/
 
 	// add swap if using this code
-	QPointF A{ 0,0 };
-	QPointF J{ v.x() - u.x(), v.y() - u.y() };
+	//QPointF A{ 0,0 };
+	//QPointF J{ v.x() - u.x(), v.y() - u.y() };
 
+	//float distAB = 0.25; // |AB|=|IJ|
+	//float distBE = 0.25; // |BE|=|FI|
+	//float distBC = 0.1;
 
-	float distAB = 0.25; // |AB|=|IJ|
-	float distBE = 0.25; // |BE|=|FI|
-	float distBC = 0.1;
+	//QPointF B = J * distAB;
+	//QPointF I = J - J * distAB;
+	//QPointF E = J * (distAB + distBE);
+	//QPointF F = J - J * (distAB + distBE);
 
-	QPointF B = J * distAB;
-	QPointF I = J - J * distAB;
-	QPointF E = J * (distAB + distBE);
-	QPointF F = J - J * (distAB + distBE);
+	//QPointF C = B + QPointF(-J.y(), J.x()) * distBC;
+	//QPointF D = E + QPointF(-J.y(), J.x()) * distBC;
+	//QPointF G = F + QPointF(J.y(), -J.x()) * distBC;
+	//QPointF H = I + QPointF(J.y(), -J.x()) * distBC;
 
-	QPointF C = B + QPointF(-J.y(), J.x()) * distBC;
-	QPointF D = E + QPointF(-J.y(), J.x()) * distBC;
-	QPointF G = F + QPointF(J.y(), -J.x()) * distBC;
-	QPointF H = I + QPointF(J.y(), -J.x()) * distBC;
-
-	toothVertices.push_back(B + u);
-	toothVertices.push_back(C + u);
-	toothVertices.push_back(D + u);
-	toothVertices.push_back(E + u);
-	toothVertices.push_back(F + u);
-	toothVertices.push_back(G + u);
-	toothVertices.push_back(H + u);
-	toothVertices.push_back(I + u);
+	//toothVertices.push_back(B + u);
+	//toothVertices.push_back(C + u);
+	//toothVertices.push_back(D + u);
+	//toothVertices.push_back(E + u);
+	//toothVertices.push_back(F + u);
+	//toothVertices.push_back(G + u);
+	//toothVertices.push_back(H + u);
+	//toothVertices.push_back(I + u);
 
 	return 8;
 };

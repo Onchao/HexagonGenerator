@@ -94,9 +94,9 @@ private:
 		std::vector<QPointF>& hullCycle,
 		float dist,
 		float hexHeightPx);
-	QPointF unitVector(const QPointF& point);
-	float crossProduct(QPointF A, QPointF B, QPointF C);
-	bool sameSide(QPointF A, QPointF B, QPointF C, QPointF D); // returns true <=> C and D are on the same side of AB
+	QPointF unitVector(const QPointF& point) const;
+	float crossProduct(const QPointF& A, const QPointF& B, const QPointF& C) const;
+	bool sameSide(const QPointF& A, const QPointF& B, const QPointF& C, const QPointF& D) const; // returns true <=> C and D are on the same side of AB
 	void writeSTL(const QString& name, const std::vector<Triangle>& triangles);
 
 	HexagonsGraph* hexagonsGraph;
