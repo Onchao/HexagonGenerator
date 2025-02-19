@@ -9,16 +9,15 @@
 #include <qlineedit.h>
 #include <QCheckBox>
 #include <QSlider>
+#include <QFileDialog>
 
 #include "ui_HexagonGenerator.h"
-
 
 #include "HexagonsGraph.h"
 #include "HexagonsScene.h"
 #include "LocationLabel.h"
 #include "CustomDial.h"
 #include "FileGenerator.h"
-
 
 
 class HexagonGenerator : public QMainWindow
@@ -33,8 +32,8 @@ public:
 private slots:
 	void randomizeGraph();
 	void updateTerrain(Terrain terrain);
-	void updateLabelText();
 	void startFileGeneration();
+	void loadExistingLocation();
 
 private:
 	Ui::HexagonGeneratorClass ui;    

@@ -35,6 +35,9 @@
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
+    <property name="styleSheet">
+     <string notr="true">text-align: center;</string>
+    </property>
     <property name="lineWidth">
      <number>0</number>
     </property>
@@ -547,11 +550,11 @@
       <x>10</x>
       <y>549</y>
       <width>281</width>
-      <height>101</height>
+      <height>111</height>
      </rect>
     </property>
     <property name="title">
-     <string>File generation</string>
+     <string>File</string>
     </property>
     <widget class="QPushButton" name="generateFiles">
      <property name="geometry">
@@ -559,56 +562,31 @@
        <x>50</x>
        <y>60</y>
        <width>181</width>
-       <height>24</height>
+       <height>41</height>
       </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <property name="text">
       <string>Generate location files</string>
      </property>
     </widget>
-    <widget class="QWidget" name="gridLayoutWidget_4">
+    <widget class="QPushButton" name="loadExistingLocation">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>70</x>
        <y>20</y>
-       <width>181</width>
-       <height>31</height>
+       <width>141</width>
+       <height>24</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="gridLayout_5">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_10">
-        <property name="text">
-         <string>Hexagon height [mm]</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="hexHeight">
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="minimum">
-         <number>10</number>
-        </property>
-        <property name="maximum">
-         <number>50</number>
-        </property>
-        <property name="value">
-         <number>33</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="text">
+      <string>Load existing location</string>
+     </property>
     </widget>
    </widget>
   </widget>

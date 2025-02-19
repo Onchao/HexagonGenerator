@@ -28,8 +28,15 @@ public:
 	LocationLabel(QGraphicsScene* scene);
 	~LocationLabel();
 	LocationLabel(QGraphicsScene* scene, LocationLabel* other, int targetWidthPx, bool simple);
+	std::string printTransform();
+	void setTransform(float posX, float posY, int size, float rotation);
 
-	void updateText(const QString& name, int gold, int knowledge, int population, int defence);
+	void updateLabelName(const QString& name);
+	void updateLabelGold(int gold);
+	void updateLabelKnowledge(int knowledge);
+	void updateLabelPopulation(int population);
+	void updateLabelDefence(int defence);
+
 	void setRotation(int angle);
 	void showCenterDot(bool visible);
 	void showLabel(bool visible);
@@ -44,8 +51,7 @@ protected:
 private:
 	constexpr static int centerDotSize = 6;
 	constexpr static float scales[] = { 0.040, 0.048, 0.058, 0.069, 0.083 };
-
-	float currentScale;
+	int currentSize = 0;
 	QGraphicsScene labelScene;
 	QGraphicsEllipseItem* centerDot;
 	QGraphicsPixmapItem* backgroundItem;

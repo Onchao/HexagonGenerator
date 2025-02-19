@@ -17,6 +17,7 @@ void FileGenerator::generateFiles(const QString& name, int hexHeightMm, Terrain 
 	generate2dPrintSimple(name, hexHeightMm, terrainType);
 	generate3dPrint(name, hexHeightMm, true);
 	generateLabelCard(name);
+	generateCsv(name, hexHeightMm, terrainType);
 	
 	std::string locationInfo = 
 		name.toStdString() + ","
@@ -32,14 +33,15 @@ void FileGenerator::generate2dPrint(const QString& name, int hexHeightMm, Terrai
 	const int hexHeightPx = mmToPx(hexHeightMm);
 	const int targetPixmapSize = hexHeightPx * 10;
 	const float penWidth = hexHeightPx / 35.0f;
-	const float additionalOffset = mmToPx(0.25);
+	const float totalOffset = -penWidth - mmToPx(offset3dPrint + 0.14);
 
 	std::vector<QPointF> allVertices;
 	std::vector<QPointF> hexCenters;
 	std::unordered_map<QPointF, std::vector<QPointF*>, QPointFHash, QPointFEqual> duplicatesMap;
 	std::vector<QPointF> hullCycle;
 	prepare(allVertices, hexCenters, duplicatesMap, hullCycle, hexHeightPx, targetPixmapSize);
-	std::vector<QPointF> hullCycleOffsetted = offsetVertices(hullCycle, -penWidth / 2 - additionalOffset, hexHeightPx);
+
+	std::vector<QPointF> hullCycleOffsetted = offsetVertices(hullCycle, totalOffset, hexHeightPx);
 
 	QPolygonF polygon(hullCycleOffsetted.begin(), hullCycleOffsetted.end());
 	QGraphicsPolygonItem* polygonItem = new QGraphicsPolygonItem(polygon);
@@ -86,8 +88,10 @@ void FileGenerator::generate2dPrintSimple(const QString& name, int hexHeightMm, 
 	const int hexHeightPx = mmToPx(hexHeightMm);
 	const int targetPixmapSize = hexHeightPx * 10;
 	const float penWidth = hexHeightPx / 35.0f;
-	const float offset = penWidth / 2 - mmToPx(0.7 + 0.1 * hexHeightMm);
-	//const float additionalOffset = mmToPx(0.25 + 0.1 * hexHeightMm / std::sqrt(3)); // TODO: fix it when using correct offset algorithm
+
+	const float additionalOffset = - mmToPx(2);
+	const float teethDepth = 0.1 * hexHeightMm / 2 * (2 / std::sqrt(3));
+	const float totalOffset = -penWidth - mmToPx(offset3dPrint + teethDepth + 0.7);
 
 	std::vector<QPointF> allVertices;
 	std::vector<QPointF> hexCenters;
@@ -102,10 +106,8 @@ void FileGenerator::generate2dPrintSimple(const QString& name, int hexHeightMm, 
 			hullCycleSimple.push_back(hullCycle[i]);
 		}
 	}
-	// TODO: fix it when using correct offset algorithm
-	// std::vector<QPointF> hullCycleOffsetted = offsetVertices(hullCycleSimple, -penWidth / 2 - additionalOffset, hexHeightPx); 
-	// TARGET OFFSET: -41.687
-	std::vector<QPointF> hullCycleOffsetted = offsetVertices(hullCycleSimple, offset, hexHeightPx);
+
+	std::vector<QPointF> hullCycleOffsetted = offsetVertices(hullCycleSimple, totalOffset, hexHeightPx);
 
 	std::vector<QPointF> smoothedCycle;
 	for (int i = 0; i < hullCycleOffsetted.size(); ++i) {
@@ -181,14 +183,13 @@ void FileGenerator::generate3dPrint(const QString& name, int hexHeightMm, bool f
 {
 	const int tileHeight = 2; // [mm]
 	const int targetPixmapSize = 10 * hexHeightMm; // mm = px
-	const float offset = 0.08; // [mm]
 
 	std::vector<QPointF> allVertices;
 	std::vector<QPointF> hexCenters;
 	std::unordered_map<QPointF, std::vector<QPointF*>, QPointFHash, QPointFEqual> duplicatesMap;
 	std::vector<QPointF> hullCycle;
 	prepare(allVertices, hexCenters, duplicatesMap, hullCycle, hexHeightMm, targetPixmapSize);
-	std::vector<QPointF> hullCycleOffsetted = offsetVertices(hullCycle, -offset, hexHeightMm);
+	std::vector<QPointF> hullCycleOffsetted = offsetVertices(hullCycle, offset3dPrint, hexHeightMm);
 
 	for (int i = 0; i < hullCycle.size(); ++i) {
 		for (QPointF* v : duplicatesMap[hullCycle[i]]) {
@@ -283,6 +284,33 @@ void FileGenerator::generate3dPrint(const QString& name, int hexHeightMm, bool f
 	}
 
 	writeSTL(name, triangles);
+}
+
+void FileGenerator::generateCsv(const QString& name, int hexHeightMm, Terrain terrainType)
+{
+	//TODO: there should be struct for that and reading
+	std::string locationInfo =
+		name.toStdString() + ","
+		+ std::to_string(hexagonsGraph->getHexagons().size()) + ","
+		+ std::string(terrainToString(terrainType)) + ","
+		+ existingLabel->printInfo();
+
+	std::string transform = existingLabel->printTransform();
+
+	std::string graphInfo;
+	for (auto [x, y] : hexagonsGraph->getGraph()) {
+		graphInfo.append("," + std::to_string(x) + "," + std::to_string(y));
+	}
+
+	std::string data = locationInfo + "," + transform + graphInfo;
+
+	QFile file("generated_locations\\" + name + "\\" + name + ".csv");
+
+	if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		QTextStream out(&file);
+		out << QString::fromStdString(data);
+		file.close();
+	}
 }
 
 float FileGenerator::mmToPx(const float mmDist)
@@ -388,15 +416,11 @@ std::vector<QPointF> FileGenerator::offsetVertices(
 		// shift = dist * |BA|*|BD| / |BA x BD|
 		// after substituting unit vector lengths: shift = dist / |uBA x uBD|
 
-		const float shift = dist / crossProduct(uBA, QPointF(0, 0), uBD);
+		const float shift = dist / abs(crossProduct(uBA, QPointF(0, 0), uBD));
 
 		const QPointF shiftVec = uBD * shift;
-		//const QPointF E = B + shiftVec;
-		//const QPointF F = B - shiftVec;
-		// BUG: TODO: correct E and F calculation is commented in 2 lines above. remember to fix offset distances in this file
-		// for now it is left out bugged because we have already made a few locations
-		const QPointF E = B + BD * dist;
-		const QPointF F = B - BD * dist;
+		const QPointF E = B + shiftVec;
+		const QPointF F = B - shiftVec;
 
 		// now add vertex E or F, which with last(), does not cross AB
 		if (i == 0) {

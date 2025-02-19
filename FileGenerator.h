@@ -82,6 +82,7 @@ private:
 	void generate2dPrintSimple(const QString& name, int hexHeightMm, Terrain terrainType);
 	void generateLabelCard(const QString& name);
 	void generate3dPrint(const QString& name, int hexHeightMm, bool flipY);
+	void generateCsv(const QString& name, int hexHeightMm, Terrain terrainType);
 	float mmToPx(const float mmDist);
 	void prepare(
 		std::vector<QPointF>& allVertices,
@@ -102,5 +103,7 @@ private:
 	HexagonsGraph* hexagonsGraph;
 	LocationLabel* existingLabel;
 	const int dpi = 300;
+	const float offset3dPrint = -0.07; // [mm]
+
 };
 

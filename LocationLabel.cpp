@@ -74,7 +74,7 @@ LocationLabel::LocationLabel(QGraphicsScene* scene, LocationLabel* other, int ta
 
 	centerDot->hide();
 
-	scaleEverything(other->currentScale * targetPixmapSize / 800);
+	scaleEverything(other->scales[other->currentSize] * targetPixmapSize / 800);
 	proxy->setPos({ (other->proxy->pos().x()) * targetPixmapSize / 800,
 				(other->proxy->pos().y()) * targetPixmapSize / 800 });
 	// scaling no longer needed
@@ -106,12 +106,44 @@ LocationLabel::LocationLabel(QGraphicsScene* scene, LocationLabel* other, int ta
 	labelScene.setSceneRect(labelScene.itemsBoundingRect());
 }
 
-void LocationLabel::updateText(const QString& name, int gold, int knowledge, int population, int defence)
+std::string LocationLabel::printTransform()
+{
+	return
+		std::to_string(proxy->pos().x()) + "," +
+		std::to_string(proxy->pos().y()) + "," + 
+		std::to_string(currentSize) + "," +
+		std::to_string(proxy->rotation());
+}
+
+void LocationLabel::setTransform(float posX, float posY, int size, float rotation)
+{
+	setSize(size);
+	setRotation(rotation);
+	proxy->setPos(posX, posY);
+}
+
+void LocationLabel::updateLabelName(const QString& name)
 {
 	nameLabel->setText(name);
+}
+
+void LocationLabel::updateLabelGold(int gold)
+{
 	goldLabel->setText(QString::number(gold));
+}
+
+void LocationLabel::updateLabelKnowledge(int knowledge)
+{
 	knowledgeLabel->setText(QString::number(knowledge));
+}
+
+void LocationLabel::updateLabelPopulation(int population)
+{
 	populationLabel->setText(QString::number(population));
+}
+
+void LocationLabel::updateLabelDefence(int defence)
+{
 	defenceLabel->setText(QString::number(defence));
 }
 
@@ -138,10 +170,10 @@ void LocationLabel::showLabel(bool visible)
 
 void LocationLabel::setSize(int size)
 {
-	if (size >= 0 && size < 5) {		
-		currentScale = scales[size];
+	if (size >= 0 && size < 5) {
+		currentSize = size;
 	}
-	scaleEverything(currentScale);
+	scaleEverything(scales[currentSize]);
 }
 
 /*
@@ -222,7 +254,8 @@ void LocationLabel::paintEvent(QPaintEvent* event)
 	QFrame::paintEvent(event);
 }
 
-std::string LocationLabel::printInfo() {
+std::string LocationLabel::printInfo()
+{
 	QString info =
 		goldLabel->text() + "," 
 		+ knowledgeLabel->text() + ","

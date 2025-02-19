@@ -37,3 +37,10 @@ constexpr std::string_view terrainToString(Terrain type)
 	case Terrain::plains: return "plains";
 	}
 }
+
+constexpr Terrain stringToTerrain(std::string_view str)
+{
+	if (str == "desert") return Terrain::desert;
+	if (str == "forest") return Terrain::forest;
+	if (str == "plains") return Terrain::plains;
+}
