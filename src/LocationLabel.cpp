@@ -104,7 +104,6 @@ LocationLabel::LocationLabel(QGraphicsScene* scene, LocationLabel* other, int ta
 	//}
 	
 	proxy->setRotation(other->proxy->rotation());
-	labelScene.setSceneRect(labelScene.itemsBoundingRect());
 }
 
 std::string LocationLabel::printTransform()

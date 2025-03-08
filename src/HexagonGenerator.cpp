@@ -119,6 +119,7 @@ void HexagonGenerator::loadSavedLocation()
 	ui.populationCount->setValue(fields[5].toInt());
 	ui.defenceCount->setValue(fields[6].toInt());
 
+	ui.sizeSlider->setValue(fields[9].toInt());
 	locationLabel->setTransform(fields[7].toFloat(), fields[8].toFloat(), fields[9].toInt(), fields[10].toFloat());
 
 	std::vector<std::pair<int, int>> newGraph;

@@ -592,6 +592,24 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>hexagonsCount</tabstop>
+  <tabstop>randomize</tabstop>
+  <tabstop>locationName</tabstop>
+  <tabstop>goldCount</tabstop>
+  <tabstop>knowledgeCount</tabstop>
+  <tabstop>populationCount</tabstop>
+  <tabstop>defenceCount</tabstop>
+  <tabstop>desertButton</tabstop>
+  <tabstop>forestButton</tabstop>
+  <tabstop>plainsButton</tabstop>
+  <tabstop>showLabel</tabstop>
+  <tabstop>labelCenter</tabstop>
+  <tabstop>sizeSlider</tabstop>
+  <tabstop>generateFiles</tabstop>
+  <tabstop>loadSavedLocation</tabstop>
+  <tabstop>graphicsView</tabstop>
+ </tabstops>
  <resources>
   <include location="HexagonGenerator.qrc"/>
  </resources>
