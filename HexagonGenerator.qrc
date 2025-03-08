@@ -5,5 +5,7 @@
         <file>graphics/label.png</file>
         <file>graphics/plains.png</file>
         <file>graphics/card.png</file>
+        <file>fonts/EB_Garamond/static/EBGaramond-Bold.ttf</file>
+        <file>fonts/EB_Garamond/static/EBGaramond-ExtraBold.ttf</file>
     </qresource>
 </RCC>

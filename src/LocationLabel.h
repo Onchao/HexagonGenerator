@@ -14,7 +14,7 @@
 #include <QGraphicsView>
 #include <iostream>
 #include <QPalette>
-
+#include <QFontDatabase>
 
 #include "ResourceManager.h"
 #include "LocationCard.h"
@@ -50,7 +50,11 @@ protected:
 
 private:
 	constexpr static int centerDotSize = 6;
-	constexpr static float scales[] = { 0.040, 0.048, 0.058, 0.069, 0.083 };
+	constexpr static float scales[] = { 0.038, 
+										0.038 * 1.2,
+										0.038 * 1.2 * 1.2,
+										0.038 * 1.2 * 1.2 * 1.2,
+										0.038 * 1.2 * 1.2 * 1.2 * 1.2};
 	int currentSize = 0;
 	QGraphicsScene labelScene;
 	QGraphicsEllipseItem* centerDot;

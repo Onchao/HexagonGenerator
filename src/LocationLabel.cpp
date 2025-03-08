@@ -24,8 +24,9 @@ LocationLabel::LocationLabel(QGraphicsScene* scene) : QFrame(), labelScene()
 	knowledgeLabel = new QLabel(this);
 	populationLabel = new QLabel(this);
 	defenceLabel = new QLabel(this);
-
-	QFont font("Rubik", 12, QFont::Bold);
+	int fontId = QFontDatabase::addApplicationFont(":/HexagonGenerator/fonts/EB_Garamond/static/EBGaramond-ExtraBold.ttf");
+	QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
+	QFont font(fontFamily, 12);
 	font.setStyleStrategy(QFont::PreferAntialias);
 	
 	nameLabel->setFont(font);
@@ -232,7 +233,7 @@ void LocationLabel::scaleEverything(float scale)
 	defenceLabel->setGeometry(width / 10 + 3 * width / 5, height / 2, width / 5, height / 2);
 
 	QFont font = nameLabel->font();
-	font.setPointSizeF(300 * scale);
+	font.setPointSizeF(310 * scale);
 	nameLabel->setFont(font);
 	goldLabel->setFont(font);
 	knowledgeLabel->setFont(font);

@@ -12,7 +12,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QGraphicsView>
-
+#include <QFontDatabase>
 
 #include "ResourceManager.h"
 

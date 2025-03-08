@@ -11,7 +11,6 @@
 #include <QPen>
 #include <set>
 #include <vector>
-#include <LocationLabel.h>
 #include <QVector3D>
 #include <QFile>
 #include <QTextStream>
@@ -20,6 +19,7 @@
 #include <tuple>
 #include <QDir>
 
+#include "LocationLabel.h"
 #include "ResourceManager.h"
 #include "HexagonsGraph.h"
 #include "LocationCard.h"
@@ -101,7 +101,7 @@ private:
 	void writeSTL(const QString& name, const std::vector<Triangle>& triangles);
 
 	HexagonsGraph* hexagonsGraph;
-	LocationLabel* existingLabel;
+	LocationLabel* editorLabel;
 	const int dpi = 300;
 	const float offset3dPrint = -0.07; // [mm]
 

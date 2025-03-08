@@ -2,7 +2,7 @@
 
 FileGenerator::FileGenerator(HexagonsGraph* graph, LocationLabel* label) :
 	hexagonsGraph(graph),
-	existingLabel(label)
+	editorLabel(label)
 {
 	std::cout << "name, size, gold, knowledge, population, defence, terrain\n";
 	QDir dir;
@@ -23,7 +23,7 @@ void FileGenerator::generateFiles(const QString& name, int hexHeightMm, Terrain 
 		name.toStdString() + ","
 		+ std::to_string(hexagonsGraph->getHexagons().size()) + ","
 		+ std::string(terrainToString(terrainType)) + ","
-		+ existingLabel->printInfo()
+		+ editorLabel->printInfo()
 		+ "\n";
 	std::cout << locationInfo;
 }
@@ -33,7 +33,7 @@ void FileGenerator::generate2dPrint(const QString& name, int hexHeightMm, Terrai
 	const int hexHeightPx = mmToPx(hexHeightMm);
 	const int targetPixmapSize = hexHeightPx * 10;
 	const float penWidth = hexHeightPx / 35.0f;
-	const float totalOffset = -penWidth - mmToPx(offset3dPrint + 0.14);
+	const float totalOffset = -penWidth / 2 + mmToPx(offset3dPrint) - mmToPx(0.14);
 
 	std::vector<QPointF> allVertices;
 	std::vector<QPointF> hexCenters;
@@ -67,7 +67,7 @@ void FileGenerator::generate2dPrint(const QString& name, int hexHeightMm, Terrai
 
 	QGraphicsScene scene;
 	scene.addItem(polygonItem);
-	LocationLabel newLabel(&scene, existingLabel, targetPixmapSize, false);
+	LocationLabel newLabel(&scene, editorLabel, targetPixmapSize, false);
 
 	QRectF sceneRect = scene.sceneRect();
 	QImage image(sceneRect.size().toSize(), QImage::Format_ARGB32);
@@ -89,9 +89,8 @@ void FileGenerator::generate2dPrintSimple(const QString& name, int hexHeightMm, 
 	const int targetPixmapSize = hexHeightPx * 10;
 	const float penWidth = hexHeightPx / 35.0f;
 
-	const float additionalOffset = - mmToPx(2);
 	const float teethDepth = 0.1 * hexHeightMm / 2 * (2 / std::sqrt(3));
-	const float totalOffset = -penWidth - mmToPx(offset3dPrint + teethDepth + 0.7);
+	const float totalOffset = -penWidth / 2 + mmToPx(offset3dPrint) - mmToPx(teethDepth + 0.8);
 
 	std::vector<QPointF> allVertices;
 	std::vector<QPointF> hexCenters;
@@ -99,7 +98,7 @@ void FileGenerator::generate2dPrintSimple(const QString& name, int hexHeightMm, 
 	std::vector<QPointF> hullCycle;
 	prepare(allVertices, hexCenters, duplicatesMap, hullCycle, hexHeightPx, targetPixmapSize);
 
-	// remove non hexagon corners vertices from the cycle
+	// remove non hexagon corner vertices from the cycle
 	std::vector<QPointF> hullCycleSimple;
 	for (int i = 0; i < hullCycle.size(); ++i) {
 		if (i % 7 == 0) {
@@ -116,8 +115,11 @@ void FileGenerator::generate2dPrintSimple(const QString& name, int hexHeightMm, 
 		const QPointF& next = hullCycleOffsetted[(i+1) % hullCycleOffsetted.size()];
 
 		if (crossProduct(prev, curr, next) < 0) { // if is concave with its neighbors
-			smoothedCycle.push_back(curr - (curr - prev) * 0.27);
-			smoothedCycle.push_back(curr + (next - curr) * 0.27);
+			const float shiftDist = mmToPx(5.25);
+			QPointF shiftPrev = unitVector(curr - prev) * shiftDist;
+			QPointF shiftNext = unitVector(next - curr) * shiftDist;
+			smoothedCycle.push_back(curr - shiftPrev);
+			smoothedCycle.push_back(curr + shiftNext);
 		}
 		else { // otherwise keep original
 			smoothedCycle.push_back(curr); 
@@ -148,7 +150,7 @@ void FileGenerator::generate2dPrintSimple(const QString& name, int hexHeightMm, 
 
 	QGraphicsScene scene;
 	scene.addItem(polygonItem);
-	LocationLabel newLabel(&scene, existingLabel, targetPixmapSize, true);
+	LocationLabel newLabel(&scene, editorLabel, targetPixmapSize, true);
 
 	QRectF sceneRect = scene.sceneRect();
 	QImage image(sceneRect.size().toSize(), QImage::Format_ARGB32);
@@ -167,7 +169,7 @@ void FileGenerator::generate2dPrintSimple(const QString& name, int hexHeightMm, 
 void FileGenerator::generateLabelCard(const QString& name)
 {
 	int widthMm = 120;
-	LocationCard locationCard(existingLabel, mmToPx(widthMm));
+	LocationCard locationCard(editorLabel, mmToPx(widthMm));
 	
 	QPixmap pixmap(locationCard.width(), locationCard.height());
 	pixmap.fill(Qt::transparent);
@@ -293,9 +295,9 @@ void FileGenerator::generateCsv(const QString& name, int hexHeightMm, Terrain te
 		name.toStdString() + ","
 		+ std::to_string(hexagonsGraph->getHexagons().size()) + ","
 		+ std::string(terrainToString(terrainType)) + ","
-		+ existingLabel->printInfo();
+		+ editorLabel->printInfo();
 
-	std::string transform = existingLabel->printTransform();
+	std::string transform = editorLabel->printTransform();
 
 	std::string graphInfo;
 	for (auto [x, y] : hexagonsGraph->getGraph()) {
@@ -385,7 +387,6 @@ std::vector<QPointF> FileGenerator::offsetVertices(
 		float dist, 
 		float hexHeightPx)
 {
-	//dist=0;
 	std::vector<QPointF> hullCycleOffsetted;
 	hullCycleOffsetted.reserve(hullCycle.size());
 

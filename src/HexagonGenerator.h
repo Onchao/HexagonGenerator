@@ -33,7 +33,7 @@ private slots:
 	void randomizeGraph();
 	void updateTerrain(Terrain terrain);
 	void startFileGeneration();
-	void loadExistingLocation();
+	void loadSavedLocation();
 
 private:
 	Ui::HexagonGeneratorClass ui;    

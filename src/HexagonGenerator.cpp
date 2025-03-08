@@ -46,7 +46,7 @@ HexagonGenerator::HexagonGenerator(QWidget* parent) :
 	locationLabel->updateLabelDefence(ui.defenceCount->value());
 
 	fileGenerator = new FileGenerator(&hexagonsGraph, locationLabel);
-	connect(ui.loadExistingLocation, &QPushButton::pressed, this, &HexagonGenerator::loadExistingLocation);
+	connect(ui.loadSavedLocation, &QPushButton::pressed, this, &HexagonGenerator::loadSavedLocation);
 	connect(ui.generateFiles, &QPushButton::pressed, this, &HexagonGenerator::startFileGeneration);
 }
 
@@ -68,14 +68,14 @@ void HexagonGenerator::updateTerrain(Terrain terrain)
 	scene->updateTerrain(terrain);
 }
 
-void HexagonGenerator::loadExistingLocation()
+void HexagonGenerator::loadSavedLocation()
 {
-	QString existingLocationFile = QFileDialog::getOpenFileName(
+	QString savedLocationFile = QFileDialog::getOpenFileName(
 		nullptr, "Open File", QDir::currentPath() + "\\generated_locations", "CSV Files (*.csv)");
 
 	QString content;
-	if (!existingLocationFile.isEmpty()) {
-		QFile file(existingLocationFile);
+	if (!savedLocationFile.isEmpty()) {
+		QFile file(savedLocationFile);
 
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			QTextStream in(&file);

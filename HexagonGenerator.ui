@@ -550,7 +550,7 @@
       <x>10</x>
       <y>549</y>
       <width>281</width>
-      <height>111</height>
+      <height>106</height>
      </rect>
     </property>
     <property name="title">
@@ -560,7 +560,7 @@
      <property name="geometry">
       <rect>
        <x>50</x>
-       <y>60</y>
+       <y>20</y>
        <width>181</width>
        <height>41</height>
       </rect>
@@ -575,17 +575,17 @@
       <string>Generate location files</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="loadExistingLocation">
+    <widget class="QPushButton" name="loadSavedLocation">
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>20</y>
+       <y>70</y>
        <width>141</width>
        <height>24</height>
       </rect>
      </property>
      <property name="text">
-      <string>Load existing location</string>
+      <string>Load saved location</string>
      </property>
     </widget>
    </widget>

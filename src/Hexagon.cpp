@@ -77,7 +77,7 @@ int Hexagon::addTeethToEdge(std::vector<QPointF>& toothVertices, QPointF u, QPoi
 	QPointF A{ 0,0 };
 	QPointF H{ v.x() - u.x(), v.y() - u.y() };
 
-	float distA_BC = 0.25; // |A(BC)|=|(FG)H| // was 0.235
+	float distA_BC = 0.235; // |A(BC)|=|(FG)H| // was 0.235
 	float distA_DE = 0.5; // center
 	float depth = 0.1;
 

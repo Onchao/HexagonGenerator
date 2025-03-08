@@ -20,8 +20,11 @@ LocationCard::LocationCard() : QFrame(), labelScene()
 	populationLabel = new QLabel(this);
 	defenceLabel = new QLabel(this);
 
-	QFont font("Rubik", 12, QFont::Bold);
+	int fontId = QFontDatabase::addApplicationFont(":/HexagonGenerator/fonts/EB_Garamond/static/EBGaramond-ExtraBold.ttf");
+	QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
+	QFont font(fontFamily, 12);
 	font.setStyleStrategy(QFont::PreferAntialias);
+
 	nameLabel->setFont(font);
 	goldLabel->setFont(font);
 	knowledgeLabel->setFont(font);
@@ -88,14 +91,14 @@ void LocationCard::scaleEverything(float width)
 	float numberWidth = width * 600 / 6300;
 	float numberShift = width * 3600 / 6300;
 
-	nameLabel->setGeometry(width * 300 / 6300, textY, width * 3000 / 6300, textHeight);;
+	nameLabel->setGeometry(width * 300 / 6300, textY, width * 3000 / 6300, textHeight);
 	goldLabel->setGeometry(      numberShift + 0 * numberWidth, textY, numberWidth, textHeight);
 	knowledgeLabel->setGeometry( numberShift + 1 * numberWidth, textY, numberWidth, textHeight);
 	populationLabel->setGeometry(numberShift + 2 * numberWidth, textY, numberWidth, textHeight);
 	defenceLabel->setGeometry(   numberShift + 3 * numberWidth, textY, numberWidth, textHeight);
 
 	QFont font = nameLabel->font();
-	font.setPointSizeF(300 * textHeight / 600);
+	font.setPointSizeF(310 * textHeight / 600);
 	nameLabel->setFont(font);
 	goldLabel->setFont(font);
 	knowledgeLabel->setFont(font);

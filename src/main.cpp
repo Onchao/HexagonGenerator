@@ -1,8 +1,8 @@
-#include "HexagonGenerator.h"
 #include <QtWidgets/QApplication>
-#include <ResourceManager.h>
 #include <QSurfaceFormat>
 
+#include "HexagonGenerator.h"
+#include "ResourceManager.h"
 
 int main(int argc, char *argv[])
 {
