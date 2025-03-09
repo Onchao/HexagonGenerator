@@ -110,7 +110,7 @@ std::string LocationLabel::printTransform()
 {
 	return
 		std::to_string(proxy->pos().x()) + "," +
-		std::to_string(proxy->pos().y()) + "," + 
+		std::to_string(proxy->pos().y()) + "," +
 		std::to_string(currentSize) + "," +
 		std::to_string(proxy->rotation());
 }

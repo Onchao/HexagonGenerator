@@ -50,11 +50,12 @@ protected:
 
 private:
 	constexpr static int centerDotSize = 6;
-	constexpr static float scales[] = { 0.038, 
-										0.038 * 1.2,
-										0.038 * 1.2 * 1.2,
-										0.038 * 1.2 * 1.2 * 1.2,
-										0.038 * 1.2 * 1.2 * 1.2 * 1.2};
+	const double mult = std::sqrt(1.2); // because we have already made some locations with 0.38 * 1.2 size
+	const double scales[5] = { 0.038,
+							  0.038 * mult,
+						      0.038 * mult * mult,
+							  0.038 * mult * mult * mult,
+							  0.038 * mult * mult * mult * mult};
 	int currentSize = 0;
 	QGraphicsScene labelScene;
 	QGraphicsEllipseItem* centerDot;
