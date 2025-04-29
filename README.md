@@ -32,6 +32,11 @@ The HexagonGenerator generates:
     <em>Locations assembled and fit together.</em>
 </p>
 
+<p align="center">
+    <img src="docs/many_locations.jpg" alt>
+    <em>Custom map built from tiles.</em>
+</p>
+
 
 ## What's Interesting About This Project?
 
